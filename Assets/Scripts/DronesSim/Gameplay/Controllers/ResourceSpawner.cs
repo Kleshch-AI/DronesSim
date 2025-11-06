@@ -1,63 +1,45 @@
+using System;
 using System.Collections.Generic;
-using DronesSim.Config;
+using DronesSim.Gameplay.Model;
+using UniRx;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
-namespace DronesSim
+namespace DronesSim.Gameplay.Controllers
 {
     public class ResourceSpawner : MonoBehaviour
     {
         [SerializeField] private BoxCollider2D spawnArea;
 
-        private ResourceConfig  _config;
+        private ResourceModel _model;
+        private GameObject _resourceViewPrefab;
 
-        private bool _isInitialized = false;
-
-        private float _timer = 0f;
         private int _count;
 
         private Queue<GameObject> _resourcePool = new Queue<GameObject>();
 
-        public void Init(ResourceConfig config)
+        public void Init(ResourceModel model, GameObject resourceViewPrefab)
         {
-            _config = config;
-            _isInitialized = true;
-        }
+            _model = model;
+            _resourceViewPrefab = resourceViewPrefab;
 
-        private void Update()
-        {
-            if (!_isInitialized)
-                return;
-
-            if (_count >= _config.MaxCount)
-                return;
-
-            _timer += Time.deltaTime;
-
-            if (_timer < _config.SpawnInterval) 
-                return;
-            
-            SpawnResource();
-            _timer = 0f;
+            Observable
+                .Interval(TimeSpan.FromSeconds(_model.SpawnInterval.Value))
+                .Where(_ => _count < _model.MaxCount.Value)
+                .Subscribe(_ => SpawnResource()).AddTo(this);
         }
 
         private void SpawnResource()
         {
             var pos = GetRandomPosition();
             var resource = _resourcePool.Count == 0
-                ? Instantiate(_config.ResourceViewPrefab, pos, Quaternion.identity)
+                ? Instantiate(_resourceViewPrefab, pos, Quaternion.identity)
                 : _resourcePool.Dequeue();
             resource.transform.position = pos;
             resource.SetActive(true);
             _count++;
         }
-
-        private void DestroyResource(GameObject resource)
-        {
-            resource.SetActive(false);
-            _resourcePool.Enqueue(resource);
-            _count--;
-        }
-
+        
         private Vector3 GetRandomPosition()
         {
             var bounds = spawnArea.bounds;
@@ -67,6 +49,13 @@ namespace DronesSim
                 Random.Range(bounds.min.y, bounds.max.y),
                 0
             );
+        }
+
+        private void DestroyResource(GameObject resource)
+        {
+            resource.SetActive(false);
+            _resourcePool.Enqueue(resource);
+            _count--;
         }
     }
 }

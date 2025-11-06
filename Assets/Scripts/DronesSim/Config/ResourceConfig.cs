@@ -5,8 +5,13 @@ namespace DronesSim.Config
     [CreateAssetMenu(fileName = "ResourceConfig", menuName = "Configs/ResourceConfig")]
     public class ResourceConfig : ScriptableObject
     {
-        public GameObject ResourceViewPrefab;
-        public int SpawnInterval;
-        public int MaxCount;
+        [SerializeField] private GameObject resourceViewPrefab;
+        [SerializeField] private int spawnInterval;
+        [SerializeField] private int maxCount;
+
+        public GameObject ResourceViewPrefab => resourceViewPrefab;
+        
+        public int SpawnInterval =>spawnInterval;
+        public int MaxCount =>maxCount;
     }
 }

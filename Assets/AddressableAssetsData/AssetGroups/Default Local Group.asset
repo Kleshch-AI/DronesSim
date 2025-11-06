@@ -15,6 +15,11 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: a9eb79b5a49b82c409ab1ef7224304cc
   m_SerializeEntries:
+  - m_GUID: 8a28be09c454f7346bd612c4001a0b1e
+    m_Address: Configs/DronesConfig
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 9cd25c7cc23c7924984ab712e08b085e
     m_Address: Configs/ResourceConfig
     m_ReadOnly: 0

@@ -12,6 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ce967128c284b59a58c406aef5a0279, type: 3}
   m_Name: ResourceConfig
   m_EditorClassIdentifier: 
-  resourceViewPrefab: {fileID: 2008815006409434484, guid: bab0c569ff4617948b1b11674e1a1abb, type: 3}
   spawnInterval: 3
   maxCount: 10

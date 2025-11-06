@@ -10,36 +10,38 @@ namespace DronesSim.Gameplay.Controllers
     public class ResourceSpawner : MonoBehaviour
     {
         [SerializeField] private BoxCollider2D spawnArea;
+        [SerializeField] private ResourceController resourceViewPrefab;
 
         private ResourceModel _model;
-        private GameObject _resourceViewPrefab;
 
         private int _count;
 
-        private Queue<GameObject> _resourcePool = new Queue<GameObject>();
+        private Queue<ResourceController> _resourcePool = new Queue<ResourceController>();
 
-        public void Init(ResourceModel model, GameObject resourceViewPrefab)
+        private Subject<ResourceController> _onCollectResource = new Subject<ResourceController>();
+
+        public void Init(ResourceModel model)
         {
             _model = model;
-            _resourceViewPrefab = resourceViewPrefab;
 
             Observable
                 .Interval(TimeSpan.FromSeconds(_model.SpawnInterval.Value))
                 .Where(_ => _count < _model.MaxCount.Value)
                 .Subscribe(_ => SpawnResource()).AddTo(this);
+
+            _onCollectResource.Subscribe(OnCollectResource).AddTo(this);
         }
 
         private void SpawnResource()
         {
             var pos = GetRandomPosition();
             var resource = _resourcePool.Count == 0
-                ? Instantiate(_resourceViewPrefab, pos, Quaternion.identity)
+                ? Instantiate(resourceViewPrefab, pos, Quaternion.identity)
                 : _resourcePool.Dequeue();
-            resource.transform.position = pos;
-            resource.SetActive(true);
+            resource.Init(pos, _onCollectResource);
             _count++;
         }
-        
+
         private Vector3 GetRandomPosition()
         {
             var bounds = spawnArea.bounds;
@@ -51,9 +53,8 @@ namespace DronesSim.Gameplay.Controllers
             );
         }
 
-        private void DestroyResource(GameObject resource)
+        private void OnCollectResource(ResourceController resource)
         {
-            resource.SetActive(false);
             _resourcePool.Enqueue(resource);
             _count--;
         }

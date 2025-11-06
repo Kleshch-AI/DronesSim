@@ -37,22 +37,29 @@ namespace DronesSim.Gameplay.Controllers
                 for (var i = 0; i < amount - _activeDronesCount; i++)
                     CreateDrone();
             }
+
             _activeDronesCount = amount;
         }
 
         private void CreateDrone()
         {
-            var drone = _dronesPool.Count > 0
-                ? _dronesPool.Dequeue()
-                : Instantiate(_dronePrefab, transform.position, transform.rotation);
+            DroneController drone = null;
+            if (_dronesPool.Count > 0)
+                drone = _dronesPool.Dequeue();
+            else
+            {
+                drone = Instantiate(_dronePrefab, transform.position, transform.rotation);
+                drone.Init();
+            }
+
             _drones.Enqueue(drone);
-            drone.gameObject.SetActive(true);
+            drone.Activate(transform.position);
         }
 
         private void DeactivateDrone()
         {
             var droneToDeactivate = _drones.Dequeue();
-            droneToDeactivate.gameObject.SetActive(false);
+            droneToDeactivate.Deactivate();
             _dronesPool.Enqueue(droneToDeactivate);
         }
     }

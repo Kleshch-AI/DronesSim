@@ -51,7 +51,7 @@ namespace DronesSim
         {
             var config = await AssetLoader.LoadAsync<ResourceConfig>("Configs/ResourceConfig");
            _models.ResourceModel = new ResourceModel(config);
-            resourceSpawner.Init(_models.ResourceModel, config.ResourceViewPrefab);
+            resourceSpawner.Init(_models.ResourceModel);
         }
 
         private async Task InitBases(List<DronesSpawner> droneSpawners)

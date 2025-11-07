@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using DronesSim.Config;
 using DronesSim.Gameplay.Model;
 using UniRx;
 using UnityEngine;
@@ -7,20 +8,21 @@ namespace DronesSim.Gameplay.Controllers
 {
     public class DronesSpawner : MonoBehaviour
     {
-        [SerializeField] private DroneType _type;
-
-        [SerializeField] private DroneController _dronePrefab;
+        [SerializeField] private DroneType type;
+        [SerializeField] private DroneController dronePrefab;
 
         private DronesModel _model;
+        private DronesConfig _config;
 
         private Queue<DroneController> _drones = new Queue<DroneController>();
         private Queue<DroneController> _dronesPool = new Queue<DroneController>();
 
         private int _activeDronesCount = 0;
 
-        public void Init(DronesModel model)
+        public void Init(DronesModel model, DronesConfig config)
         {
             _model = model;
+            _config = config;
 
             _model.Amount.Subscribe(OnDronesAmountChange).AddTo(this);
         }
@@ -48,8 +50,8 @@ namespace DronesSim.Gameplay.Controllers
                 drone = _dronesPool.Dequeue();
             else
             {
-                drone = Instantiate(_dronePrefab, transform.position, transform.rotation);
-                drone.Init();
+                drone = Instantiate(dronePrefab, transform.position, transform.rotation);
+                drone.Init(_config, transform.position, _config.GlobalSteeringSpeed);
             }
 
             _drones.Enqueue(drone);

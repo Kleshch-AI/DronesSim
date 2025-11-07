@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ce967128c284b59a58c406aef5a0279, type: 3}
   m_Name: ResourceConfig
   m_EditorClassIdentifier: 
-  spawnInterval: 3
+  spawnInterval: 1
   maxCount: 10

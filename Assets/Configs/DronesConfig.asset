@@ -12,15 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b74ec6235f27415fad1699c00be7f568, type: 3}
   m_Name: DronesConfig
   m_EditorClassIdentifier: 
-  serializationData:
-    SerializedFormat: 2
-    SerializedBytes: 
-    ReferencedUnityObjects: []
-    SerializedBytesString: 
-    Prefab: {fileID: 0}
-    PrefabModificationsReferencedUnityObjects: []
-    PrefabModifications: []
-    SerializationNodes: []
-  speed: 10
-  amountPerBase: 5
+  globalSteeringSpeed: 5
+  amountPerBase: 6
   maxAmount: 10
+  movementSettings:
+    collectDuration: 2
+    unloadDuration: 2
+    collectDistance: 0.3
+    baseContactDistance: 2
+    claimResourceDistance: 0.9
+  steeringBehaviourSettings:
+    speed: 4
+    force: 20
+    evadeRadius: 1
+    evadeStrength: 10

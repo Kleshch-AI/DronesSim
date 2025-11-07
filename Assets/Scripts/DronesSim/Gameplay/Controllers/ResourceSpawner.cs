@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using DronesSim.Gameplay.Model;
+using DronesSim.Config;
 using UniRx;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -12,21 +12,20 @@ namespace DronesSim.Gameplay.Controllers
         [SerializeField] private BoxCollider2D spawnArea;
         [SerializeField] private ResourceController resourceViewPrefab;
 
-        private ResourceModel _model;
-
+        private ResourceConfig _config;
         private int _count;
 
         private Queue<ResourceController> _resourcePool = new Queue<ResourceController>();
 
         private Subject<ResourceController> _onCollectResource = new Subject<ResourceController>();
 
-        public void Init(ResourceModel model)
+        public void Init(ResourceConfig config)
         {
-            _model = model;
+            _config = config;
 
             Observable
-                .Interval(TimeSpan.FromSeconds(_model.SpawnInterval.Value))
-                .Where(_ => _count < _model.MaxCount.Value)
+                .Interval(TimeSpan.FromSeconds(_config.SpawnInterval))
+                .Where(_ => _count < _config.MaxCount)
                 .Subscribe(_ => SpawnResource()).AddTo(this);
 
             _onCollectResource.Subscribe(OnCollectResource).AddTo(this);

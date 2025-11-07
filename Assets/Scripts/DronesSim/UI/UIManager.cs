@@ -1,3 +1,4 @@
+using DronesSim.Config;
 using DronesSim.Gameplay.Model;
 using UniRx;
 using UnityEngine;
@@ -10,6 +11,7 @@ namespace DronesSim.UI
         public struct Ctx
         {
             public DronesModel DronesModel;
+            public DronesConfig DronesConfig;
         }
         
         [SerializeField] private Button settingsButton;
@@ -24,7 +26,7 @@ namespace DronesSim.UI
             settingsUI.Init(new SettingsUI.Ctx
             {
                 DronesAmount = _ctx.DronesModel.Amount,
-                DronesMaxAmount = _ctx.DronesModel.MaxAmount,
+                DronesMaxAmount = _ctx.DronesConfig.MaxAmount,
             });
             
             settingsButton.OnClickAsObservable().Subscribe(_ => ToggleSettings()).AddTo(this);

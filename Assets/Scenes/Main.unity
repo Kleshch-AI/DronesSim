@@ -198,8 +198,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbe294ac372e4863898ffb390c9db9e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _type: 0
-  _dronePrefab: {fileID: 3213186316725296278, guid: 9d2ad9ddfd186144cafe69540d47efec, type: 3}
+  type: 0
+  dronePrefab: {fileID: 3213186316725296278, guid: 9d2ad9ddfd186144cafe69540d47efec, type: 3}
 --- !u!212 &102054917
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1259,8 +1259,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbe294ac372e4863898ffb390c9db9e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _type: 1
-  _dronePrefab: {fileID: 5074686872806177366, guid: 3cf63217f273e8c4890caf8cb44fc11d, type: 3}
+  type: 1
+  dronePrefab: {fileID: 5074686872806177366, guid: 3cf63217f273e8c4890caf8cb44fc11d, type: 3}
 --- !u!212 &1571803945
 SpriteRenderer:
   m_ObjectHideFlags: 0

@@ -16,10 +16,18 @@ namespace DronesSim
             public ResourceModel ResourceModel;
             public DronesModel DronesModel;
         }
-        
+
+        private struct Configs
+        {
+            public DronesConfig DronesConfig;
+            public ResourceConfig ResourceConfig;
+        }
+
         private Models _models;
-        
-        public async void InitGame(ResourceSpawner resourceSpawner, List<DronesSpawner> dronesSpawners, UIManager uiManager)
+        private Configs _configs;
+
+        public async void InitGame(ResourceSpawner resourceSpawner, List<DronesSpawner> dronesSpawners,
+            UIManager uiManager)
         {
             try
             {
@@ -30,10 +38,11 @@ namespace DronesSim
                 };
 
                 await Task.WhenAll(loadOperations);
-            
+
                 uiManager.Init(new UIManager.Ctx
                 {
-                    DronesModel = _models.DronesModel
+                    DronesModel = _models.DronesModel,
+                    DronesConfig = _configs.DronesConfig,
                 });
             }
             catch (Exception e)
@@ -49,17 +58,17 @@ namespace DronesSim
 
         private async Task InitResources(ResourceSpawner resourceSpawner)
         {
-            var config = await AssetLoader.LoadAsync<ResourceConfig>("Configs/ResourceConfig");
-           _models.ResourceModel = new ResourceModel(config);
-            resourceSpawner.Init(_models.ResourceModel);
+            _configs.ResourceConfig = await AssetLoader.LoadAsync<ResourceConfig>("Configs/ResourceConfig");
+            _models.ResourceModel = new ResourceModel(_configs.ResourceConfig);
+            resourceSpawner.Init(_configs.ResourceConfig);
         }
 
         private async Task InitBases(List<DronesSpawner> droneSpawners)
         {
-            var config = await AssetLoader.LoadAsync<DronesConfig>("Configs/DronesConfig");
-            _models.DronesModel = new DronesModel(config);
+            _configs.DronesConfig = await AssetLoader.LoadAsync<DronesConfig>("Configs/DronesConfig");
+            _models.DronesModel = new DronesModel(_configs.DronesConfig);
             foreach (var b in droneSpawners)
-                b.Init(_models.DronesModel);
+                b.Init(_models.DronesModel, _configs.DronesConfig);
         }
     }
 }

@@ -18,7 +18,7 @@ namespace DronesSim.Gameplay.Controllers
         private float _maxSpeed;
         private float _factor;
         private float _maxForce => _behaviourSettings.force * _factor;
-        private float _avoidRadius =>_behaviourSettings.evadeRadius * _factor;
+        private float _avoidRadius => _behaviourSettings.evadeRadius * _factor;
         private float _avoidStrength => _behaviourSettings.evadeStrength * _factor;
 
         private Behaviours _activeBehaviours = Behaviours.None;
@@ -61,7 +61,7 @@ namespace DronesSim.Gameplay.Controllers
         public void SetupSeek(Vector2 position) => _seekPosition = position;
 
         public void SetupEvade(LayerMask layerMask) => _separationMask = layerMask;
-        
+
         private void Update()
         {
             if (_activeBehaviours == Behaviours.None)
@@ -69,9 +69,13 @@ namespace DronesSim.Gameplay.Controllers
 
             var steer = Vector2.zero;
 
-            if (IsBehaviourEnabled(Behaviours.Evade))
             if (IsBehaviourEnabled(Behaviours.Seek))
+            {
                 steer += GetSeekForce();
+#if UNITY_EDITOR
+                Debug.DrawLine(transform.position, _seekPosition, Color.red);
+#endif
+            }
 
             if (IsBehaviourEnabled(Behaviours.Evade))
                 steer += GetSeparationForce();

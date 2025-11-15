@@ -18,11 +18,11 @@ MonoBehaviour:
   movementSettings:
     collectDuration: 2
     unloadDuration: 2
-    collectDistance: 0.3
+    collectDistance: 0.1
     baseContactDistance: 2
-    claimResourceDistance: 0.9
+    claimResourceDistance: 2
   steeringBehaviourSettings:
     speed: 4
     force: 20
-    evadeRadius: 1
+    evadeRadius: 0.6
     evadeStrength: 10

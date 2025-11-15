@@ -70,6 +70,7 @@ namespace DronesSim.Gameplay.Controllers
             var steer = Vector2.zero;
 
             if (IsBehaviourEnabled(Behaviours.Evade))
+            if (IsBehaviourEnabled(Behaviours.Seek))
                 steer += GetSeekForce();
 
             if (IsBehaviourEnabled(Behaviours.Evade))
